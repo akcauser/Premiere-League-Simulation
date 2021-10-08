@@ -15,13 +15,12 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item pt-2 font-weight-light"><h4>Tournament Teams</h4></li>
             <li class="list-group-item bg-dark text-white pt-2"><b>Team Name</b></li>
-            <li class="list-group-item pt-2">Liverpool</li>
-            <li class="list-group-item pt-2">Manchester City</li>
-            <li class="list-group-item pt-2">Chelsea</li>
-            <li class="list-group-item pt-2">Arsenal</li>
+            @foreach($teams as $team)
+                <li class="list-group-item pt-2">{{ $team }}</li>
+            @endforeach
         </ul>
         <div class="mt-2">
-            <a href="" class="btn btn-info">
+            <a href="{{ route('fixture') }}" class="btn btn-info">
                 Generate Fixtures
             </a>
         </div>
