@@ -19,3 +19,5 @@ Route::get('/', [\App\Http\Controllers\WelcomeController::class, 'welcome'])->na
 Route::get("/fixture", [\App\Http\Controllers\FixtureController::class, 'index'])->name('fixture');
 
 Route::get("/simulation", [\App\Http\Controllers\SimulationController::class, 'index'])->name('simulation');
+Route::get("/simulation/play", [\App\Http\Controllers\SimulationController::class, 'play'])->name('simulation.play');
+Route::get("/simulation/reset", [\App\Http\Controllers\SimulationController::class, 'reset'])->name('simulation.reset');

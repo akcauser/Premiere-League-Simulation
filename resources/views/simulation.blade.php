@@ -46,19 +46,27 @@
         </div>
         <div class="col-3">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item bg-dark text-white pt-2"><b>Week {{ $currentWeekGames[0]->week }}</b></li>
+                <li class="list-group-item bg-dark text-white pt-2"><b>Week {{ $lastWeekGames[0]->week }}</b></li>
                 <li class="list-group-item pt-3 pb-3 text-center">
                     <div class="row">
-                        <div class="col">{{ $currentWeekGames[0]->team_1 }}</div>
-                        <div class="col">-</div>
-                        <div class="col">{{ $currentWeekGames[0]->team_2 }}</div>
+                        <div class="col">{{ $lastWeekGames[0]->team_1 }}</div>
+                        @if($lastWeekGames[0]->played)
+                            <div class="col">{{ $lastWeekGames[0]->score_1 }} - {{ $lastWeekGames[0]->score_2 }}</div>
+                        @else
+                            <div class="col">-</div>
+                        @endif
+                        <div class="col">{{ $lastWeekGames[0]->team_2 }}</div>
                     </div>
                 </li>
                 <li class="list-group-item pt-2 text-center">
                     <div class="row">
-                        <div class="col">{{ $currentWeekGames[1]->team_1 }}</div>
-                        <div class="col">-</div>
-                        <div class="col">{{ $currentWeekGames[1]->team_2 }}</div>
+                        <div class="col">{{ $lastWeekGames[1]->team_1 }}</div>
+                        @if($lastWeekGames[1]->played)
+                            <div class="col">{{ $lastWeekGames[1]->score_1 }} - {{ $lastWeekGames[1]->score_2 }}</div>
+                        @else
+                            <div class="col">-</div>
+                        @endif
+                        <div class="col">{{ $lastWeekGames[1]->team_2 }}</div>
                     </div>
                 </li>
             </ul>
@@ -94,14 +102,16 @@
     </div>
     <div class="m-1 text-center">
         <div class="row">
+            @if($lastWeekGames[0]->week != 6)
+                <div class="col">
+                    <a href="" class="btn btn-info">Play All Weeks</a>
+                </div>
+                <div class="col">
+                    <a href="{{ route('simulation.play') }}" class="btn btn-info">Play Next Week</a>
+                </div>
+            @endif
             <div class="col">
-                <a href="" class="btn btn-info">Play All Weeks</a>
-            </div>
-            <div class="col">
-                <a href="" class="btn btn-info">Play Next Week</a>
-            </div>
-            <div class="col">
-                <a href="" class="btn btn-danger">Reset Data</a>
+                <a href="{{ route('simulation.reset') }}" class="btn btn-danger">Reset Data</a>
             </div>
         </div>
     </div>
