@@ -10,6 +10,7 @@ class WelcomeController extends Controller
     public function welcome()
     {
         $teams = DataHelper::$teams;
+
         return view('welcome', compact('teams'));
     }
 }
