@@ -18,6 +18,4 @@ Route::get('/', [\App\Http\Controllers\WelcomeController::class, 'welcome'])->na
 
 Route::get("/fixture", [\App\Http\Controllers\FixtureController::class, 'index'])->name('fixture');
 
-Route::get("/simulation", function () {
-    return view('simulation');
-})->name('simulation');
+Route::get("/simulation", [\App\Http\Controllers\SimulationController::class, 'index'])->name('simulation');

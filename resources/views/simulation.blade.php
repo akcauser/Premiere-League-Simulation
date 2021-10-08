@@ -21,6 +21,7 @@
                 <thead>
                 <tr class="bg-dark text-white">
                     <th scope="col">Team Name</th>
+                    <th scope="col">PTS</th>
                     <th scope="col">P</th>
                     <th scope="col">W</th>
                     <th scope="col">D</th>
@@ -29,38 +30,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="col">Liverpool</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                </tr>
-                <tr>
-                    <th scope="col">Manchester City</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                </tr>
-                <tr>
-                    <th scope="col">Chelsea</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                </tr>
-                <tr>
-                    <th scope="col">Arsenal</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                    <th scope="col">0</th>
-                </tr>
+                @foreach($pointTable as $row)
+                    <tr>
+                        <th scope="col">{{ $row["team"] }}</th>
+                        <th scope="col">{{ $row["pts"] }}</th>
+                        <th scope="col">{{ $row["p"] }}</th>
+                        <th scope="col">{{ $row["w"] }}</th>
+                        <th scope="col">{{ $row["d"] }}</th>
+                        <th scope="col">{{ $row["l"] }}</th>
+                        <th scope="col">{{ $row["gd"] }}</th>
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>
