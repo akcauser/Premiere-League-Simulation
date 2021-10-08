@@ -17,11 +17,11 @@
             <li class="list-group-item pt-2 font-weight-light"><h4>Tournament Teams</h4></li>
             <li class="list-group-item bg-dark text-white pt-2"><b>Team Name</b></li>
             @foreach($teams as $team)
-                <li class="list-group-item pt-2">{{ $team }}</li>
+                <li class="list-group-item pt-2">{{ $team->name }}</li>
             @endforeach
         </ul>
         <div class="mt-2">
-            <a @click="shuffleTeams()" class="btn btn-info">
+            <a href="{{ route('fixture') }}" class="btn btn-info">
                 Generate Fixtures
             </a>
         </div>
@@ -29,25 +29,5 @@
 </body>
 
 <script>
-    const app = new Vue({
-        el: '#app',
-        delimiters: ['!{', '}!'],
-        data() {
-            return {
-                title: "Generated Fixtures",
-                teams: {!! json_encode($teams) !!}
-            }
-        },
-        methods: {
-            shuffleTeams(){
-                this.shuffle(this.teams)
-                localStorage.setItem('teams', this.teams)
-                window.location.href = "{!! route('fixture') !!}";
-            },
-            shuffle(array) {
-                array.sort(() => Math.random() - 0.5);
-            }
-        }
-    });
 </script>
 </html>

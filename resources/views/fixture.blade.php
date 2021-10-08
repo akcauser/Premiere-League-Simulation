@@ -17,22 +17,22 @@
         <h1>Generated Fixtures</h1>
     </div>
     <div class="row mt-3">
-        @foreach($fixture as $week => $matches)
+        @foreach($fixture as $weekTitle => $week)
             <div class="col-3">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item bg-dark text-white pt-2"><b>{{ $week }}</b></li>
+                    <li class="list-group-item bg-dark text-white pt-2"><b>{{ $weekTitle }}</b></li>
                     <li class="list-group-item pt-3 pb-3 text-center">
                         <div class="row">
-                            <div class="col">!{ teams[{!! $matches[0][0]-1 !!}] }!</div>
+                            <div class="col">{{ $week[0]->team_1 }}</div>
                             <div class="col-1">-</div>
-                            <div class="col">!{ teams[{!! $matches[0][1]-1 !!}] }!</div>
+                            <div class="col">{{ $week[0]->team_2 }}</div>
                         </div>
                     </li>
                     <li class="list-group-item pt-2 text-center">
                         <div class="row">
-                            <div class="col">!{ teams[{!! $matches[1][0]-1 !!}] }!</div>
+                            <div class="col">{{ $week[1]->team_1 }}</div>
                             <div class="col-1">-</div>
-                            <div class="col">!{ teams[{!! $matches[1][1]-1 !!}] }!</div>
+                            <div class="col">{{ $week[1]->team_2 }}</div>
                         </div>
                     </li>
                 </ul>
