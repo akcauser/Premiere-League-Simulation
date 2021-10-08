@@ -46,19 +46,19 @@
         </div>
         <div class="col-3">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item bg-dark text-white pt-2"><b>Week 1</b></li>
+                <li class="list-group-item bg-dark text-white pt-2"><b>Week {{ $currentWeekGames[0]->week }}</b></li>
                 <li class="list-group-item pt-3 pb-3 text-center">
                     <div class="row">
-                        <div class="col">Arsenal</div>
+                        <div class="col">{{ $currentWeekGames[0]->team_1 }}</div>
                         <div class="col">-</div>
-                        <div class="col">Liverpool</div>
+                        <div class="col">{{ $currentWeekGames[0]->team_2 }}</div>
                     </div>
                 </li>
                 <li class="list-group-item pt-2 text-center">
                     <div class="row">
-                        <div class="col">Arsenal</div>
+                        <div class="col">{{ $currentWeekGames[1]->team_1 }}</div>
                         <div class="col">-</div>
-                        <div class="col">Liverpool</div>
+                        <div class="col">{{ $currentWeekGames[1]->team_2 }}</div>
                     </div>
                 </li>
             </ul>
