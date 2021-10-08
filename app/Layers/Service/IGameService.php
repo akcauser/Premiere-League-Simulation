@@ -9,4 +9,6 @@ interface IGameService
     public function play();
 
     public function reset();
+
+    public function playAll();
 }

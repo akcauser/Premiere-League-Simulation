@@ -104,7 +104,7 @@
         <div class="row">
             @if($lastWeekGames[0]->week != 6)
                 <div class="col">
-                    <a href="" class="btn btn-info">Play All Weeks</a>
+                    <a href="{{ route('simulation.playAll') }}" class="btn btn-info">Play All Weeks</a>
                 </div>
                 <div class="col">
                     <a href="{{ route('simulation.play') }}" class="btn btn-info">Play Next Week</a>

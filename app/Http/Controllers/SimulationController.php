@@ -37,4 +37,11 @@ class SimulationController extends Controller
 
         return redirect()->route('welcome');
     }
+
+    public function playAll()
+    {
+        $this->gameService->playAll();
+
+        return redirect()->route('simulation');
+    }
 }

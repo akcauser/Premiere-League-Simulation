@@ -28,6 +28,9 @@ class GameService implements IGameService
     public function play()
     {
         $firstTwoNotPlayedGames = $this->gameData->getFirstTwoNotPlayed();
+        if (count($firstTwoNotPlayedGames) == 0)
+            return false;
+
         foreach ($firstTwoNotPlayedGames as $game)
         {
             $game->score_1 = rand(0,5);
@@ -37,10 +40,19 @@ class GameService implements IGameService
             if (!$response)
                 Log::error("Play Method Error, Game not saved");
         }
+
+        return true;
     }
 
     public function reset()
     {
         return $this->gameData->deleteAll();
+    }
+
+    public function playAll()
+    {
+        $res = true;
+        while ($res)
+            $res = $this->play();
     }
 }
