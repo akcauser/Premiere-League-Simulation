@@ -74,6 +74,12 @@ php artisan migrate:fresh --seed
 
 ![welcome image](./doc/img/simulation.png)
 
+# Tests
+
+```shell
+php artisan test
+```
+
 # Contributing Guide
 
 * [Check Contributing Guide](./CONTRIBUTING.md).
