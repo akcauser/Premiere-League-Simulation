@@ -121,24 +121,24 @@ class GameService implements IGameService
         // calculate remaining stakeholders
         foreach ($pointTable as $item)
         {
-            $w = $item["w"];
-            if ($w == 0){
-                $w = 0.25;
+            $coefficient = $item["w"] + ($item["gd"] / 7);
+            if ($coefficient == 0){
+                $coefficient = 0.25;
             }
             if ($predictions[$item["team"]] != 0){
-                $stakeHolder += $w;
+                $stakeHolder += $coefficient;
             }
         }
 
         // divide percentages between remaining stakeholders
         foreach ($pointTable as $item)
         {
-            $w = $item["w"];
-            if ($w == 0){
-                $w = 0.25;
+            $coefficient = $item["w"] + ($item["gd"] / 7);
+            if ($coefficient == 0){
+                $coefficient = 0.25;
             }
             if ($predictions[$item["team"]] == "-"){
-                $predictions[$item["team"]] = number_format($remainingPercentage / $stakeHolder * $w, 1);
+                $predictions[$item["team"]] = number_format($remainingPercentage / $stakeHolder * $coefficient, 1);
             }
         }
 
