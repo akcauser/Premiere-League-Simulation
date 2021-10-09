@@ -64,6 +64,16 @@ php artisan migrate:fresh --seed
 
 ![welcome image](./doc/img/welcome.png)
 
+# Screenshots
+
+* Fixture Page
+  
+![fixture screenshot](./doc/img/fixture.png)
+
+* Simulation Page
+
+![welcome image](./doc/img/simulation.png)
+
 # Contributing Guide
 
 * [Check Contributing Guide](./CONTRIBUTING.md).
