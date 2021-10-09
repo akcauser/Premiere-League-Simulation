@@ -81,4 +81,14 @@ class GameData implements IGameData
     {
         return Game::where('played', true)->where('team_2', $team2)->get();
     }
+
+    public function getNotPlayedGamesByTeam1($team1)
+    {
+        return Game::where('played', false)->where('team_1', $team1)->get();
+    }
+
+    public function getNotPlayedGamesByTeam2($team2)
+    {
+        return Game::where('played', false)->where('team_2', $team2)->get();
+    }
 }
