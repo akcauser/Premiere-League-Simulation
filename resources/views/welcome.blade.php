@@ -21,7 +21,7 @@
             @endforeach
         </ul>
         <div class="mt-2">
-            <a href="{{ route('fixture') }}" class="btn btn-info">
+            <a href="{{ route('fixture.generate') }}" class="btn btn-info">
                 Generate Fixtures
             </a>
         </div>

@@ -2,13 +2,14 @@
 
 namespace App\Layers\Service;
 
-use App\Helpers\SimulationHelper;
+use App\Helpers\FixtureHelper;
 use App\Layers\Data\IGameData;
+use App\Models\Team;
 use Illuminate\Support\Facades\Log;
 
 class GameService implements IGameService
 {
-    private IGameData $gameData;
+    private $gameData;
 
     public function __construct(IGameData $gameData)
     {
@@ -31,7 +32,7 @@ class GameService implements IGameService
         if (count($firstTwoNotPlayedGames) == 0)
             return false;
 
-        $pointTable = SimulationHelper::getPointTable();
+        $pointTable = $this->getPointTable();
 
         foreach ($firstTwoNotPlayedGames as $game)
         {
@@ -91,7 +92,7 @@ class GameService implements IGameService
         }
 
         // calculate prediction for each team
-        $pointTable = SimulationHelper::getPointTable();
+        $pointTable = $this->getPointTable();
         $remainingWeekNumber = $this->gameData->remainingWeekNumber();
         if ($remainingWeekNumber > 3){
             return $predictions;
@@ -138,10 +139,116 @@ class GameService implements IGameService
                 $coefficient = 0.25;
             }
             if ($predictions[$item["team"]] == "-"){
-                $predictions[$item["team"]] = number_format($remainingPercentage / $stakeHolder * $coefficient, 1);
+                $predictions[$item["team"]] = number_format($remainingPercentage / $stakeHolder * $coefficient, 2);
             }
         }
 
         return $predictions;
+    }
+
+    public function getFixture()
+    {
+        $fixture = [];
+        for ($i=1; $i<=6; $i++){
+            $games = $this->gameData->getGamesByWeek($i);
+            $fixture["Week $i"] = $games;
+        }
+
+        return $fixture;
+    }
+
+    public function checkFixtureCreated(): bool
+    {
+        $data = $this->gameData->getAnyGame();
+        if (count($data) == 1){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function generateFixture(): bool
+    {
+        $teams = Team::all()->toArray();
+        shuffle($teams);
+        foreach (FixtureHelper::$fixtureDesign as $weekNumber => $week) {
+            $this->gameData->save(
+                $teams[$week[0][0]-1]["name"],
+                $teams[$week[0][1]-1]["name"],
+                $weekNumber
+            );
+
+            $this->gameData->save(
+                $teams[$week[1][0]-1]["name"],
+                $teams[$week[1][1]-1]["name"],
+                $weekNumber
+            );
+        }
+
+        return true;
+    }
+
+    public function getPointTable(): array
+    {
+        $teams = Team::all();
+
+        $pointTable = [];
+        foreach ($teams as $team) {
+            $pts = 0; // point
+            $p = 0; // played
+            $w = 0; // won
+            $d = 0; // drawn
+            $l = 0; // lost
+            $gf = 0; // goal scored
+            $ga = 0; // goal conceded
+
+            // games that played as home team
+            $homeGames = $this->gameData->getPlayedGamesByTeam1($team->name);
+            foreach ($homeGames as $game) {
+                $p++;
+                if ($game->score_1 > $game->score_2) {$w++; $pts += 3;}
+                elseif ($game->score_1 == $game->score_2) {$d++; $pts += 1;}
+                else $l++;
+
+                $gf += $game->score_1;
+                $ga += $game->score_2;
+            }
+
+            // games that played as guest team
+            $guestGames = $this->gameData->getPlayedGamesByTeam2($team->name);
+            foreach ($guestGames as $game) {
+                $p++;
+                if ($game->score_1 < $game->score_2) {$w++; $pts += 3;}
+                elseif ($game->score_1 == $game->score_2) {$d++; $pts += 1;}
+                else $l++;
+
+                $gf += $game->score_2;
+                $ga += $game->score_1;
+            }
+
+            $gd = $gf-$ga;
+
+            array_push($pointTable, [
+                "team" => $team->name,
+                "pts" => $pts,
+                "p" => $p,
+                "w" => $w,
+                "d" => $d,
+                "l" => $l,
+                "gd" => $gd,
+                "gf" => $gf,
+                "ga" => $ga,
+            ]);
+        }
+
+        // sort point table with pts
+        usort($pointTable, function($a, $b) {
+            if ($a['pts'] == $b['pts']) {
+                return $b['gd'] - $a['gd'];
+            }
+            return $b['pts'] - $a['pts'];
+        });
+
+        return $pointTable;
     }
 }

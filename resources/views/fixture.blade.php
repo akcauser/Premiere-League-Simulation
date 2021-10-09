@@ -44,25 +44,4 @@
     </div>
 </div>
 </body>
-
-<script>
-    const app = new Vue({
-        el: '#app',
-        delimiters: ['!{', '}!'],
-        data() {
-            return {
-                title: "Generated Fixtures",
-                teams: null,
-            }
-        },
-        methods: {},
-        created(){
-            if(localStorage.getItem('teams') == null){
-                window.location.href = "{!! route('welcome') !!}"
-            }
-            this.teams = localStorage.getItem('teams').split(",")
-        }
-    });
-</script>
-
 </html>

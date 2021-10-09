@@ -15,4 +15,12 @@ interface IGameService
     public function getPlayedGames();
 
     public function getPredictions();
+
+    public function getFixture();
+
+    public function checkFixtureCreated(): bool;
+
+    public function generateFixture(): bool;
+
+    public function getPointTable(): array;
 }

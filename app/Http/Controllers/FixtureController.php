@@ -2,24 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\FixtureHelper;
-use App\Models\Game;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Layers\Service\IGameService;
 
 class FixtureController extends Controller
 {
+    private $gameService;
+
+    public function __construct(IGameService $gameService)
+    {
+        $this->gameService = $gameService;
+    }
+
     public function index()
     {
-        $fixtureCreated = FixtureHelper::checkFixtureCreated();
+        $fixtureCreated = $this->gameService->checkFixtureCreated();
         if (!$fixtureCreated){
-            FixtureHelper::generateFixture();
+            return redirect()->route('welcome');
         }
 
         // get fixture
-        $fixture = FixtureHelper::getFixture();
-
+        $fixture = $this->gameService->getFixture();
 
         return view('fixture', compact('fixture'));
+    }
+
+    public function generate()
+    {
+        $this->gameService->generateFixture();
+        return redirect()->route('fixture');
     }
 }

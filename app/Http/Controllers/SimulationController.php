@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\SimulationHelper;
 use App\Layers\Service\IGameService;
-use Illuminate\Http\Request;
 
 class SimulationController extends Controller
 {
-    private IGameService $gameService;
+    private $gameService;
 
     public function __construct(IGameService $gameService)
     {
@@ -17,7 +15,7 @@ class SimulationController extends Controller
 
     public function index()
     {
-        $pointTable = SimulationHelper::getPointTable();
+        $pointTable = $this->gameService->getPointTable();
 
         $lastWeekGames = $this->gameService->getLastWeekGames();
         $playedGames = $this->gameService->getPlayedGames();

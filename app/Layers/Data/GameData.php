@@ -52,4 +52,33 @@ class GameData implements IGameData
             return 0;
         return 7 - $nextFirstMatch->week;
     }
+
+    public function getGamesByWeek($week)
+    {
+        return Game::where('week', $week)->get();
+    }
+
+    public function getAnyGame()
+    {
+        return Game::limit(1)->get();
+    }
+
+    public function save($team_1, $team_2, $week): bool
+    {
+        $game = new Game;
+        $game->team_1 = $team_1;
+        $game->team_2 = $team_2;
+        $game->week = $week;
+        return $game->save();
+    }
+
+    public function getPlayedGamesByTeam1($team1)
+    {
+        return Game::where('played', true)->where('team_1', $team1)->get();
+    }
+
+    public function getPlayedGamesByTeam2($team2)
+    {
+        return Game::where('played', true)->where('team_2', $team2)->get();
+    }
 }
