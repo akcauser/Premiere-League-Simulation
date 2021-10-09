@@ -26,7 +26,6 @@ services:
             MYSQL_DATABASE: tournament
             MYSQL_ROOT_PASSWORD: password
             MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-            MYSQL_USER: root
         ports:
             - "3306:3306"
     ## nginx
