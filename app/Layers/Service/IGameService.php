@@ -13,4 +13,6 @@ interface IGameService
     public function playAll();
 
     public function getPlayedGames();
+
+    public function getPredictions();
 }

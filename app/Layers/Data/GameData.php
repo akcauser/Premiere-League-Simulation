@@ -31,4 +31,25 @@ class GameData implements IGameData
     {
         return Game::where('played', true)->orderBy('week')->get();
     }
+
+    public function getMatchTeams()
+    {
+        return Game::select('team_1')->groupBy('team_1')->orderBy('team_1')->get();
+    }
+
+    public function getPlayedGamesByTeam($teamName)
+    {
+        return Game::where('played', true)->orWhere(function ($query) use ($teamName){
+            $query->where('team_1', $teamName);
+            $query->where('team_2', $teamName);
+        })->get();
+    }
+
+    public function remainingWeekNumber()
+    {
+        $nextFirstMatch = Game::where('played', false)->orderBy('week')->first();
+        if (!isset($nextFirstMatch))
+            return 0;
+        return 7 - $nextFirstMatch->week;
+    }
 }

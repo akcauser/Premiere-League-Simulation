@@ -2,6 +2,7 @@
 
 namespace App\Layers\Service;
 
+use App\Helpers\SimulationHelper;
 use App\Layers\Data\IGameData;
 use Illuminate\Support\Facades\Log;
 
@@ -59,5 +60,41 @@ class GameService implements IGameService
     public function getPlayedGames()
     {
         return $this->gameData->getPlayedGames();
+    }
+
+    // todo: calculate prediction and logic
+    public function getPredictions()
+    {
+        $predictions = [];
+        $teams = $this->gameData->getMatchTeams();
+        foreach ($teams as $team)
+        {
+            $predictions[$team->team_1] = 0;
+        }
+
+        // calculate prediction for each team
+        $pointTable = SimulationHelper::getPointTable();
+        $remainingWeekNumber = $this->gameData->remainingWeekNumber();
+
+
+        foreach ($pointTable as $row){
+            if ($pointTable[0]["pts"] - $row["pts"] > $remainingWeekNumber * 3)
+                $predictions[$row["team"]] = 0;
+        }
+
+        // last 3 weeks check
+        // if in last 3 week, check %100 case, if first_team_score - second_team_score > 9 then championship team = first_team
+        // if in last 2 week, check %100 case, if first_team_score - second_team_score > 6 then championship team = first_team
+        // if in last 1 week, check %100 case, if first_team_score - second_team_score > 3 then championship team = first_team
+        if ($remainingWeekNumber < 3 && $pointTable[0]["pts"] - $pointTable[1]["pts"] > $remainingWeekNumber*3){
+            $predictions[$pointTable[0]["team"]] = 100;
+            $predictions[$pointTable[1]["team"]] = 0;
+            $predictions[$pointTable[2]["team"]] = 0;
+            $predictions[$pointTable[3]["team"]] = 0;
+            return $predictions;
+        }
+
+
+        return $predictions;
     }
 }

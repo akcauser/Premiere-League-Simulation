@@ -21,8 +21,9 @@ class SimulationController extends Controller
 
         $lastWeekGames = $this->gameService->getLastWeekGames();
         $playedGames = $this->gameService->getPlayedGames();
+        $predictions = $this->gameService->getPredictions();
 
-        return view('simulation', compact('pointTable', 'lastWeekGames', 'playedGames'));
+        return view('simulation', compact('pointTable', 'lastWeekGames', 'playedGames', 'predictions'));
     }
 
     public function play()

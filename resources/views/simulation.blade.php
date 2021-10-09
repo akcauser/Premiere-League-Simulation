@@ -20,13 +20,15 @@
             <table class="table">
                 <thead>
                 <tr class="bg-dark text-white">
-                    <th scope="col">Team Name</th>
-                    <th scope="col">PTS</th>
-                    <th scope="col">P</th>
-                    <th scope="col">W</th>
-                    <th scope="col">D</th>
-                    <th scope="col">L</th>
-                    <th scope="col">GD</th>
+                    <th scope="col" title="Team Name">Team Name</th>
+                    <th scope="col" title="Point">PTS</th>
+                    <th scope="col" title="Played">P</th>
+                    <th scope="col" title="Won">W</th>
+                    <th scope="col" title="Drawn">D</th>
+                    <th scope="col" title="Lost">L</th>
+                    <th scope="col" title="Goals For">GF</th>
+                    <th scope="col" title="Goals Against">GA</th>
+                    <th scope="col" title="Goal Difference">GD</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,6 +40,8 @@
                         <th scope="col">{{ $row["w"] }}</th>
                         <th scope="col">{{ $row["d"] }}</th>
                         <th scope="col">{{ $row["l"] }}</th>
+                        <th scope="col">{{ $row["gf"] }}</th>
+                        <th scope="col">{{ $row["ga"] }}</th>
                         <th scope="col">{{ $row["gd"] }}</th>
                     </tr>
                 @endforeach
@@ -80,22 +84,12 @@
                 </tr>
                 </thead>
                 <tbody>
+                @foreach($predictions as $team => $percent)
                 <tr>
-                    <th scope="col">Liverpool</th>
-                    <th scope="col">0</th>
+                    <th scope="col">{{ $team }}</th>
+                    <th scope="col">{{ $lastWeekGames[0]->week > 3 ? $percent : 0 }}</th>
                 </tr>
-                <tr>
-                    <th scope="col">Manchester City</th>
-                    <th scope="col">0</th>
-                </tr>
-                <tr>
-                    <th scope="col">Chelsea</th>
-                    <th scope="col">0</th>
-                </tr>
-                <tr>
-                    <th scope="col">Arsenal</th>
-                    <th scope="col">0</th>
-                </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>

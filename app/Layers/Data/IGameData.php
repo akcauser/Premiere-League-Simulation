@@ -15,4 +15,10 @@ interface IGameData
     public function deleteAll();
 
     public function getPlayedGames();
+
+    public function getMatchTeams();
+
+    public function getPlayedGamesByTeam($teamName);
+
+    public function remainingWeekNumber();
 }
