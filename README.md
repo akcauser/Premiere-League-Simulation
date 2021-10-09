@@ -51,7 +51,7 @@ php artisan key:generate
 docker-compose up -d
 ```
 
-6. Enter to app container
+6. Wait 1 minute :blush: and enter to app container
 
 ```shell
 docker exec -it premiere-league-simulation_app_1 bash
@@ -63,9 +63,17 @@ docker exec -it premiere-league-simulation_app_1 bash
 php artisan migrate:fresh --seed
 ```
 
-8. Open welcome page `http://localhost:8080`
+8. Open welcome page [http://localhost:8080](http://localhost:8080)
 
 ![welcome image](./doc/img/welcome.png)
+
+# Tests
+
+Run this command to run tests.
+
+```shell
+php artisan test
+```
 
 # Screenshots
 
@@ -76,12 +84,6 @@ php artisan migrate:fresh --seed
 * Simulation Page
 
 ![welcome image](./doc/img/simulation.png)
-
-# Tests
-
-```shell
-php artisan test
-```
 
 # Algorithms
 
