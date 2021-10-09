@@ -1,6 +1,6 @@
 # Premiere League Simulation
 
-Go Demo: [https://premierleegue.akcauser.com](https://premierleegue.akcauser.com)
+Go Demo: [https://premierleague.akcauser.com/](https://premierleague.akcauser.com/)
 
 ## Tech Stack
 
