@@ -7,11 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link href="asset/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
 
     <title>Simulation</title>
 </head>
 <body>
-<div class="m-3">
+<div class="m-3" id="app">
     <div class="text-center mt-2">
         <h1>Simulation</h1>
     </div>
@@ -87,7 +88,7 @@
                 @foreach($predictions as $team => $percent)
                 <tr>
                     <th scope="col">{{ $team }}</th>
-                    <th scope="col">{{ $lastWeekGames[0]->week > 3 ? $percent : 0 }}</th>
+                    <th scope="col">{{ $lastWeekGames[0]->week >= 3 ? $percent : "-" }}</th>
                 </tr>
                 @endforeach
                 </tbody>
@@ -98,14 +99,14 @@
         <div class="row">
             @if($lastWeekGames[0]->week != 6)
                 <div class="col">
-                    <a href="{{ route('simulation.playAll') }}" class="btn btn-info">Play All Weeks</a>
+                    <a :class="{'disabled' :btnClicked}" @click="playAllMatches()" class="btn btn-info">Play All Weeks</a>
                 </div>
                 <div class="col">
-                    <a href="{{ route('simulation.play') }}" class="btn btn-info">Play Next Week</a>
+                    <a :class="{'disabled' :btnClicked}" @click="playMatch()" class="btn btn-info">Play Next Week</a>
                 </div>
             @endif
             <div class="col">
-                <a href="{{ route('simulation.reset') }}" class="btn btn-danger">Reset Data</a>
+                <a :class="{'disabled' :btnClicked}" @click="reset()" class="btn btn-danger">Reset Data</a>
             </div>
         </div>
     </div>
@@ -132,4 +133,38 @@
     </div>
 </div>
 </body>
+
+<script>
+    const app = new Vue({
+        el: '#app',
+        delimiters: ['!{', '}!'],
+        data() {
+            return {
+                title: "Generated Fixtures",
+                teams: null,
+                clicked: false,
+            }
+        },
+        methods: {
+            playMatch(){
+                this.clicked = true
+                window.location.href = "{{ route('simulation.play') }}"
+            },
+            playAllMatches(){
+                this.clicked = true
+                window.location.href = "{{ route('simulation.playAll') }}"
+            },
+            reset(){
+                this.clicked = true
+                window.location.href = "{{ route('simulation.reset') }}"
+            },
+        },
+        computed: {
+            btnClicked(){
+                return this.clicked;
+            }
+        }
+    });
+</script>
+
 </html>
