@@ -1,5 +1,7 @@
 # Premiere League Simulation
 
+Go Demo: [https://premierleegue.akcauser.com](https://premierleegue.akcauser.com)
+
 ## Tech Stack
 
 * PHP (version: 8.0)
@@ -7,6 +9,7 @@
 * MySQL (version: 8.0) (Persistent Storage)
 * Nginx
 * Docker, Docker Compose
+* Github Actions
 
 ## Installation
 
