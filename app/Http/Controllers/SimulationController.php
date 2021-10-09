@@ -20,8 +20,9 @@ class SimulationController extends Controller
         $pointTable = SimulationHelper::getPointTable();
 
         $lastWeekGames = $this->gameService->getLastWeekGames();
+        $playedGames = $this->gameService->getPlayedGames();
 
-        return view('simulation', compact('pointTable', 'lastWeekGames'));
+        return view('simulation', compact('pointTable', 'lastWeekGames', 'playedGames'));
     }
 
     public function play()

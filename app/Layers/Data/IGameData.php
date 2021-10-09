@@ -13,4 +13,6 @@ interface IGameData
     public function getLastTwoPlayed();
 
     public function deleteAll();
+
+    public function getPlayedGames();
 }

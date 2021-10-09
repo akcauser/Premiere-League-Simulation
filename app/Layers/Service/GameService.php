@@ -55,4 +55,9 @@ class GameService implements IGameService
         while ($res)
             $res = $this->play();
     }
+
+    public function getPlayedGames()
+    {
+        return $this->gameData->getPlayedGames();
+    }
 }

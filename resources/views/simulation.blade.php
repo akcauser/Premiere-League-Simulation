@@ -115,6 +115,27 @@
             </div>
         </div>
     </div>
+    <div class="row mt-5">
+        <div class="col-6">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-dark text-white pt-2"><b>Played Matches</b></li>
+                <li class="list-group-item pt-3 pb-3 text-center">
+                    @foreach($playedGames as $game)
+                    <div class="row">
+                        <div class="col text-danger">Week {{ $game->week }}</div>
+                        <div class="col">{{ $game->team_1 }}</div>
+                        @if($game->played)
+                            <div class="col">{{ $game->score_1 }} - {{ $game->score_2 }}</div>
+                        @else
+                            <div class="col">-</div>
+                        @endif
+                        <div class="col">{{ $game->team_2 }}</div>
+                    </div>
+                    @endforeach
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 </body>
 </html>

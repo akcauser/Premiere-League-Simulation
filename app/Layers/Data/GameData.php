@@ -26,4 +26,9 @@ class GameData implements IGameData
     {
         return DB::table('games')->delete();
     }
+
+    public function getPlayedGames()
+    {
+        return Game::where('played', true)->orderBy('week')->get();
+    }
 }

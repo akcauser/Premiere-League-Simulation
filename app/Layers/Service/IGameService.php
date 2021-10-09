@@ -11,4 +11,6 @@ interface IGameService
     public function reset();
 
     public function playAll();
+
+    public function getPlayedGames();
 }
