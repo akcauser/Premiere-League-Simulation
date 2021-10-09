@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\FixtureHelper;
 use App\Layers\Service\IGameService;
 use App\Models\Team;
-use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
 {
@@ -20,7 +18,7 @@ class WelcomeController extends Controller
     {
         $teams = Team::all();
 
-        // check fixture generated or not
+        // if fixture generated before, then redirect fixture page.
         $fixtureCreated = $this->gameService->checkFixtureCreated();
         if ($fixtureCreated){
             return redirect()->route('fixture');

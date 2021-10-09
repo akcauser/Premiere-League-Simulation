@@ -2,10 +2,6 @@
 
 namespace App\Helpers;
 
-use App\Models\Game;
-use App\Models\Team;
-use Illuminate\Support\Facades\DB;
-
 class FixtureHelper
 {
     // Fixture design for six weeks and four teams

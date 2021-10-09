@@ -16,7 +16,6 @@ class SimulationController extends Controller
     public function index()
     {
         $pointTable = $this->gameService->getPointTable();
-
         $lastWeekGames = $this->gameService->getLastWeekGames();
         $playedGames = $this->gameService->getPlayedGames();
         $predictions = $this->gameService->getPredictions();

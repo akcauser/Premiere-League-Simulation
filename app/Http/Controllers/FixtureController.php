@@ -15,6 +15,7 @@ class FixtureController extends Controller
 
     public function index()
     {
+        //check fixture, if fixture not created, redirect welcome page
         $fixtureCreated = $this->gameService->checkFixtureCreated();
         if (!$fixtureCreated){
             return redirect()->route('welcome');

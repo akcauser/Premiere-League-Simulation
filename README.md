@@ -83,6 +83,33 @@ php artisan migrate:fresh --seed
 php artisan test
 ```
 
+# Algorithms
+
+#### Number of goals scored by one team to against team
+Algorithm looks past matches and goal difference. Also, it uses random integers.
+
+```
+goal = 0
+coefficient = x won match - x lost match - against won match + against lost match + x goal difference
+if coefficient > 0
+  goal = goal + random_int(0, coefficient % 3)
+
+goal = goal + random_int(0, random_int(1,6))
+```
+
+### Prediction Algorithm
+
+```
+
+if remainingWeekNumber*3 < firstTeamPoint - $secondTeamPoint or remainingWeekNumber = 0 then [firstTeamPrediction = 100%]
+
+if first_team_point - x team point > remainingWeekNumber*3 then [x team prediction = 0%]
+
+**Calculation**
+
+**X** Team Prediction = 100 / (total won match + (if goal_difference > 0 then goal_difference / 7 else 0 for all teams)) * (**X** won match + (if goal_difference > 0 then goal_difference / 7 else 0 for **X** team))
+
+```
 # Contributing Guide
 
 * [Check Contributing Guide](./CONTRIBUTING.md).

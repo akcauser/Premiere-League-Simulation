@@ -16,6 +16,11 @@ class GameService implements IGameService
         $this->gameData = $gameData;
     }
 
+    /**
+     * @return mixed
+     *
+     * Returns played matches in last week
+     */
     public function getLastWeekGames()
     {
         $lastTwoPlayed = $this->gameData->getLastTwoPlayed();
@@ -26,6 +31,11 @@ class GameService implements IGameService
         return $lastTwoPlayed;
     }
 
+    /**
+     * @return bool
+     *
+     * Play a match
+     */
     public function play()
     {
         $firstTwoNotPlayedGames = $this->gameData->getFirstTwoNotPlayed();
@@ -53,6 +63,19 @@ class GameService implements IGameService
         return true;
     }
 
+    /**
+     * @param $for
+     * @param $against
+     * @return int
+     *
+     * Get Goal Number x team to against team
+     * goal = 0
+     * coefficient = x won match - x lost match - against won match + against lost match + x goal difference
+     * if coefficient > 0
+     *     goal = goal + random_int(0, coefficient % 3)
+     *
+     * goal = goal + random_int(0, random_int(1,6))
+     */
     private function getGoalNumber($for, $against){
         $goals = 0;
         $coefficient1 = $for["w"] - $for["l"] - $against["w"] + $against["l"] + $for["gd"];
@@ -64,11 +87,19 @@ class GameService implements IGameService
         return $goals;
     }
 
+    /**
+     * @return mixed
+     *
+     * This function deletes all matches
+     */
     public function reset()
     {
         return $this->gameData->deleteAll();
     }
 
+    /**
+     * Play all match that not played before
+     */
     public function playAll()
     {
         $res = true;
@@ -76,12 +107,25 @@ class GameService implements IGameService
             $res = $this->play();
     }
 
+    /**
+     * @return mixed
+     *
+     * Returns played matches
+     */
     public function getPlayedGames()
     {
         return $this->gameData->getPlayedGames();
     }
 
-    // todo: calculate prediction and logic
+    /**
+     * Prediction Algorithm
+     *
+     * if remainingWeekNumber*3 < firstTeamPoint - $secondTeamPoint or remainingWeekNumber = 0 then [firstTeamPrediction = 100%]
+     * if first_team_point - x team point > remainingWeekNumber*3 then [x team prediction = 0%]
+     * Calculation
+     * X Team Prediction = 100 / (total won match + (if goal_difference > 0 then goal_difference / 7 else 0 for all teams)) * (X won match + (if goal_difference > 0 then goal_difference / 7 else 0 for X team))
+     * @return array
+     */
     public function getPredictions()
     {
         $predictions = [];
@@ -98,11 +142,7 @@ class GameService implements IGameService
             return $predictions;
         }
 
-        // last 3 weeks check
-        // if in last 3 week, check %100 case, if first_team_score - second_team_score > 9 then championship team = first_team
-        // if in last 2 week, check %100 case, if first_team_score - second_team_score > 6 then championship team = first_team
-        // if in last 1 week, check %100 case, if first_team_score - second_team_score > 3 then championship team = first_team
-        // $remainingWeekNumber == 0 => %100 championship team = first_team
+        // if remainingWeekNumber*3 < firstTeamPoint - $secondTeamPoint or remainingWeekNumber = 0 then firstTeamPrediction = 100%
         if (($remainingWeekNumber < 3 && $pointTable[0]["pts"] - $pointTable[1]["pts"] > $remainingWeekNumber*3) || $remainingWeekNumber == 0){
             $predictions[$pointTable[0]["team"]] = 100;
             $predictions[$pointTable[1]["team"]] = 0;
@@ -111,15 +151,16 @@ class GameService implements IGameService
             return $predictions;
         }
 
+        // if first_team_point - x team point > remainingWeekNumber*3 then [x team prediction = 0%]
         foreach ($pointTable as $row){
             if ($pointTable[0]["pts"] - $row["pts"] > $remainingWeekNumber * 3)
                 $predictions[$row["team"]] = 0;
         }
 
+        // calculate remaining stakeholders
         $remainingPercentage = 100;
         $stakeHolder = 0;
 
-        // calculate remaining stakeholders
         foreach ($pointTable as $item)
         {
             $coefficient = $item["w"] + ($item["gd"] / 7 > 0 ? $item["gd"] / 7 : 0);
@@ -146,6 +187,11 @@ class GameService implements IGameService
         return $predictions;
     }
 
+    /**
+     * @return array
+     *
+     * Returns fixture with details.
+     */
     public function getFixture()
     {
         $fixture = [];
@@ -157,6 +203,11 @@ class GameService implements IGameService
         return $fixture;
     }
 
+    /**
+     * @return bool
+     *
+     * If any match created before, then return true, else return false
+     */
     public function checkFixtureCreated(): bool
     {
         $data = $this->gameData->getAnyGame();
@@ -167,6 +218,12 @@ class GameService implements IGameService
         return false;
     }
 
+    /**
+     * @return bool
+     *
+     * Generate all matches.
+     * When generating a fixture, using fixture design in Fixture Helper.
+     */
     public function generateFixture(): bool
     {
         $teams = Team::all()->toArray();
@@ -188,6 +245,12 @@ class GameService implements IGameService
         return true;
     }
 
+    /**
+     * @return array
+     *
+     * Calculate point table details and return an array that contains team statistics
+     * Returned array ordered by points and goal difference
+     */
     public function getPointTable(): array
     {
         $teams = Team::all();
@@ -241,7 +304,7 @@ class GameService implements IGameService
             ]);
         }
 
-        // sort point table with pts
+        // sort point table with pts and gd
         usort($pointTable, function($a, $b) {
             if ($a['pts'] == $b['pts']) {
                 return $b['gd'] - $a['gd'];
