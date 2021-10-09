@@ -25,17 +25,24 @@ class GameService implements IGameService
         return $lastTwoPlayed;
     }
 
-    // todo: play game logic
     public function play()
     {
         $firstTwoNotPlayedGames = $this->gameData->getFirstTwoNotPlayed();
         if (count($firstTwoNotPlayedGames) == 0)
             return false;
 
+        $pointTable = SimulationHelper::getPointTable();
+
         foreach ($firstTwoNotPlayedGames as $game)
         {
-            $game->score_1 = rand(0,5);
-            $game->score_2 = rand(0,5);
+            $team1Index = array_search($game->team_1, array_column($pointTable, 'team'));
+            $team2Index = array_search($game->team_2, array_column($pointTable, 'team'));
+
+            $team1Goals = $this->getGoalNumber($pointTable[$team1Index], $pointTable[$team2Index]);
+            $team2Goals = $this->getGoalNumber($pointTable[$team2Index], $pointTable[$team1Index]);
+
+            $game->score_1 = $team1Goals;
+            $game->score_2 = $team2Goals;
             $game->played = true;
             $response = $this->gameData->update($game);
             if (!$response)
@@ -43,6 +50,17 @@ class GameService implements IGameService
         }
 
         return true;
+    }
+
+    private function getGoalNumber($for, $against){
+        $goals = 0;
+        $coefficient1 = $for["w"] - $for["l"] - $against["w"] + $against["l"] + $for["gd"];
+        if ($coefficient1 > 0){
+            $goals += rand(0, $coefficient1 % 3);
+        }
+        $goals += rand(0, rand(1,6));
+
+        return $goals;
     }
 
     public function reset()
